@@ -23,11 +23,11 @@ interface NavItem {
 const navItems: NavItem[] = [
   { label: 'Trang chủ', path: '/', icon: 'home' },
   {
-    label: 'Tổng quan',
-    path: '/overview',
-    icon: 'dashboard',
+    label: 'Bản đồ GIS',
+    path: '/map',
+    icon: 'map',
     children: [
-      { label: 'Bản đồ GIS', path: '/map', icon: 'map' },
+      { label: 'Tổng quan', path: '/overview', icon: 'dashboard' },
       { label: 'Phản ánh hiện trường', path: '/report-scene', icon: 'campaign' },
       { label: 'Camera an ninh', path: '/camera', icon: 'videocam' },
     ],
@@ -135,7 +135,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             const isParentActive = location.pathname === item.path
             const isChildActive = Boolean(
               hasChildren &&
-                item.children!.some((c) => location.pathname === c.path)
+              item.children!.some((c) => location.pathname === c.path)
             )
 
             // Standard menu item (without children)
@@ -178,8 +178,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     isParentActive
                       ? 'bg-secondary-container text-on-secondary-container font-semibold border-l-4 border-secondary shadow-sm'
                       : isChildActive
-                      ? 'bg-white/10 text-white font-medium'
-                      : 'text-white/80 hover:text-white hover:bg-primary-container'
+                        ? 'bg-white/10 text-white font-medium'
+                        : 'text-white/80 hover:text-white hover:bg-primary-container'
                   )}
                 >
                   <NavLink
