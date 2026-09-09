@@ -37,7 +37,7 @@ export const AdminPage: React.FC = () => {
   ]
 
   return (
-    <div className="max-w-container_max_width mx-auto space-y-8">
+    <div className="w-full space-y-8">
       {/* Page Header */}
       <div>
         <h2 className="font-display-lg text-display-lg text-on-background font-bold">QUẢN TRỊ AI</h2>

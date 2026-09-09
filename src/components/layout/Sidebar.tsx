@@ -9,6 +9,9 @@ interface SidebarProps {
 
 const navItems = [
   { label: 'Tổng quan', path: '/', icon: 'dashboard' },
+  { label: 'Bản đồ GIS', path: '/map', icon: 'map' },
+  { label: 'Phản ánh hiện trường', path: '/phan-anh-hien-truong', icon: 'campaign' },
+  { label: 'Camera an ninh', path: '/camera', icon: 'videocam' },
   { label: 'Lịch công tác', path: '/calendar', icon: 'calendar_today' },
   { label: 'KPI & Công việc', path: '/kpi', icon: 'assignment' },
   { label: 'Phản ánh người dân', path: '/feedback', icon: 'forum' },

@@ -90,7 +90,7 @@ export default {
         stack_md: "16px",
         stack_lg: "24px",
         sidebar_collapsed: "72px",
-        container_max_width: "1440px",
+        container_max_width: "100%",
         header_height: "64px",
         margin_desktop: "32px",
         stack_sm: "8px",

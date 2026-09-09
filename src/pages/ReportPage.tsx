@@ -71,7 +71,7 @@ export const ReportPage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-container_max_width mx-auto flex flex-col gap-6">
+    <div className="w-full flex flex-col gap-6">
       {/* Page Header & Global Filters */}
       <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-4">
         <div>

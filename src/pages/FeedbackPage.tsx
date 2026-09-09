@@ -82,7 +82,7 @@ export const FeedbackPage: React.FC = () => {
   })
 
   return (
-    <div className="max-w-container_max_width mx-auto">
+    <div className="w-full">
       {/* Header & Actions */}
       <div className="flex justify-between items-end mb-stack_lg flex-wrap gap-4">
         <div>

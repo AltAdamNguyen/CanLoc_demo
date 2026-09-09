@@ -40,7 +40,7 @@ export const VotingPage: React.FC = () => {
   const otherPercent = 100 - agreePercent - disagreePercent
 
   return (
-    <div className="max-w-container_max_width mx-auto space-y-gutter">
+    <div className="w-full space-y-gutter">
       {/* Header & Actions */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
