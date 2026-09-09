@@ -767,8 +767,8 @@ export const OverviewPage: React.FC = () => {
                 <button
                   onClick={() => setRadarHeatmap(!radarHeatmap)}
                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-label-sm text-label-sm font-semibold transition-all shadow-xs border ${radarHeatmap
-                      ? 'bg-primary text-white border-primary'
-                      : 'bg-white text-on-surface border-[#E4E7EC] hover:bg-gray-50'
+                    ? 'bg-primary text-white border-primary'
+                    : 'bg-white text-on-surface border-[#E4E7EC] hover:bg-gray-50'
                     }`}
                 >
                   <span className="material-symbols-outlined text-[15px]">radar</span>
@@ -789,8 +789,8 @@ export const OverviewPage: React.FC = () => {
                     key={cat.id}
                     onClick={() => setActiveCategory(cat.id)}
                     className={`px-3 py-1 rounded-full font-label-sm text-label-sm font-semibold flex items-center gap-1.5 transition-all ${isActive
-                        ? 'bg-primary text-on-primary shadow-xs'
-                        : 'bg-surface-container text-on-surface hover:bg-surface-container-high'
+                      ? 'bg-primary text-on-primary shadow-xs'
+                      : 'bg-surface-container text-on-surface hover:bg-surface-container-high'
                       }`}
                   >
                     {cat.icon && (
@@ -1058,7 +1058,7 @@ export const OverviewPage: React.FC = () => {
                 </span>
               </div>
               <button
-                onClick={() => navigate('/feedback')}
+                onClick={() => navigate('/report-scene')}
                 className="text-tertiary hover:underline font-label-sm text-label-sm font-semibold flex items-center gap-0.5"
               >
                 Xem tất cả
@@ -1075,8 +1075,8 @@ export const OverviewPage: React.FC = () => {
                     key={inc.id}
                     onClick={() => handleSelectIncident(inc)}
                     className={`p-3.5 rounded-xl flex flex-col gap-1.5 transition-all cursor-pointer border ${isSelected
-                        ? 'bg-surface-container border-primary shadow-xs'
-                        : 'bg-surface-container-low border-transparent hover:border-outline-variant hover:bg-surface-container'
+                      ? 'bg-surface-container border-primary shadow-xs'
+                      : 'bg-surface-container-low border-transparent hover:border-outline-variant hover:bg-surface-container'
                       }`}
                   >
                     <div className="flex items-center justify-between">
@@ -1086,14 +1086,14 @@ export const OverviewPage: React.FC = () => {
                         </span>
                         <span
                           className={`px-2 py-0.5 rounded-md font-label-sm text-label-sm font-bold ${inc.category === 'PCCC'
-                              ? 'bg-error-container text-on-error-container'
-                              : inc.category === 'ANTT'
-                                ? 'bg-secondary-fixed text-on-secondary-fixed'
-                                : inc.category === 'ATTP'
-                                  ? 'bg-tertiary-fixed text-on-tertiary-fixed'
-                                  : inc.category === 'Môi trường'
-                                    ? 'bg-primary-fixed text-on-primary-fixed-variant'
-                                    : 'bg-surface-container-highest text-on-surface'
+                            ? 'bg-error-container text-on-error-container'
+                            : inc.category === 'ANTT'
+                              ? 'bg-secondary-fixed text-on-secondary-fixed'
+                              : inc.category === 'ATTP'
+                                ? 'bg-tertiary-fixed text-on-tertiary-fixed'
+                                : inc.category === 'Môi trường'
+                                  ? 'bg-primary-fixed text-on-primary-fixed-variant'
+                                  : 'bg-surface-container-highest text-on-surface'
                             }`}
                         >
                           {inc.category}
@@ -1113,28 +1113,28 @@ export const OverviewPage: React.FC = () => {
                     <div className="flex items-center justify-between pt-1">
                       <span
                         className={`inline-flex items-center gap-1 text-label-sm font-semibold ${inc.severity === 'Cao'
-                            ? 'text-error'
-                            : inc.severity === 'Trung bình'
-                              ? 'text-secondary'
-                              : 'text-on-surface-variant'
+                          ? 'text-error'
+                          : inc.severity === 'Trung bình'
+                            ? 'text-secondary'
+                            : 'text-on-surface-variant'
                           }`}
                       >
                         <span
                           className={`w-2 h-2 rounded-full ${inc.severity === 'Cao'
-                              ? 'bg-error'
-                              : inc.severity === 'Trung bình'
-                                ? 'bg-secondary'
-                                : 'bg-outline'
+                            ? 'bg-error'
+                            : inc.severity === 'Trung bình'
+                              ? 'bg-secondary'
+                              : 'bg-outline'
                             }`}
                         ></span>
                         Mức độ: {inc.severity}
                       </span>
                       <span
                         className={`inline-flex items-center px-2 py-0.5 rounded-md font-label-sm text-label-sm font-bold ${inc.statusType === 'warning'
-                            ? 'bg-secondary-container text-on-secondary-container'
-                            : inc.statusType === 'info'
-                              ? 'bg-surface-container-high text-on-surface'
-                              : 'bg-tertiary-fixed text-tertiary'
+                          ? 'bg-secondary-container text-on-secondary-container'
+                          : inc.statusType === 'info'
+                            ? 'bg-surface-container-high text-on-surface'
+                            : 'bg-tertiary-fixed text-tertiary'
                           }`}
                       >
                         {inc.status}

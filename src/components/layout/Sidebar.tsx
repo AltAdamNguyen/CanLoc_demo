@@ -1,5 +1,5 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { NavLink, useLocation } from 'react-router-dom'
 import { cn } from '@/lib/utils'
 
 interface SidebarProps {
@@ -7,11 +7,31 @@ interface SidebarProps {
   onCloseMobile?: () => void
 }
 
-const navItems = [
-  { label: 'Tổng quan', path: '/', icon: 'dashboard' },
-  { label: 'Bản đồ GIS', path: '/map', icon: 'map' },
-  { label: 'Phản ánh hiện trường', path: '/phan-anh-hien-truong', icon: 'campaign' },
-  { label: 'Camera an ninh', path: '/camera', icon: 'videocam' },
+interface NavSubItem {
+  label: string
+  path: string
+  icon: string
+}
+
+interface NavItem {
+  label: string
+  path: string
+  icon: string
+  children?: NavSubItem[]
+}
+
+const navItems: NavItem[] = [
+  { label: 'Trang chủ', path: '/', icon: 'home' },
+  {
+    label: 'Tổng quan',
+    path: '/overview',
+    icon: 'dashboard',
+    children: [
+      { label: 'Bản đồ GIS', path: '/map', icon: 'map' },
+      { label: 'Phản ánh hiện trường', path: '/report-scene', icon: 'campaign' },
+      { label: 'Camera an ninh', path: '/camera', icon: 'videocam' },
+    ],
+  },
   { label: 'Lịch công tác', path: '/calendar', icon: 'calendar_today' },
   { label: 'KPI & Công việc', path: '/kpi', icon: 'assignment' },
   { label: 'Phản ánh người dân', path: '/feedback', icon: 'forum' },
@@ -24,6 +44,58 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isOpenMobile = false,
   onCloseMobile,
 }) => {
+  const location = useLocation()
+
+  // Track expanded state for menu items with children
+  const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>(() => {
+    const initial: Record<string, boolean> = {}
+    navItems.forEach((item) => {
+      if (item.children) {
+        const isCurrentOrChild =
+          location.pathname === item.path ||
+          item.children.some((c) => location.pathname === c.path)
+        initial[item.path] = isCurrentOrChild
+      }
+    })
+    return initial
+  })
+
+  // Auto-expand if the route changes to one of the child items or parent item
+  useEffect(() => {
+    navItems.forEach((item) => {
+      if (item.children) {
+        const isCurrentOrChild =
+          location.pathname === item.path ||
+          item.children.some((c) => location.pathname === c.path)
+        if (isCurrentOrChild) {
+          setExpandedMenus((prev) => ({ ...prev, [item.path]: true }))
+        }
+      }
+    })
+  }, [location.pathname])
+
+  const toggleMenu = (path: string, e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+    setExpandedMenus((prev) => ({
+      ...prev,
+      [path]: !prev[path],
+    }))
+  }
+
+  const handleParentClick = (item: NavItem) => {
+    // When clicking parent: expand the dropdown and navigate to item.path (/overview)
+    setExpandedMenus((prev) => ({
+      ...prev,
+      [item.path]: true,
+    }))
+    if (onCloseMobile) {
+      onCloseMobile()
+    }
+  }
+
   return (
     <>
       {/* Mobile Backdrop */}
@@ -57,33 +129,126 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         {/* Navigation Items */}
         <nav className="flex-1 space-y-1.5 overflow-y-auto px-1">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              onClick={onCloseMobile}
-              className={({ isActive }) =>
-                cn(
-                  'flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all duration-150',
-                  isActive
-                    ? 'bg-secondary-container text-on-secondary-container font-semibold border-l-4 border-secondary shadow-sm'
-                    : 'text-white/80 hover:text-white hover:bg-primary-container'
-                )
-              }
-            >
-              {({ isActive }) => (
-                <>
-                  <span
-                    className="material-symbols-outlined text-xl shrink-0"
-                    data-weight={isActive ? 'fill' : '0'}
+          {navItems.map((item) => {
+            const hasChildren = Boolean(item.children && item.children.length > 0)
+            const isExpanded = !!expandedMenus[item.path]
+            const isParentActive = location.pathname === item.path
+            const isChildActive = Boolean(
+              hasChildren &&
+                item.children!.some((c) => location.pathname === c.path)
+            )
+
+            // Standard menu item (without children)
+            if (!hasChildren) {
+              return (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  onClick={onCloseMobile}
+                  className={({ isActive }) =>
+                    cn(
+                      'flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all duration-150',
+                      isActive
+                        ? 'bg-secondary-container text-on-secondary-container font-semibold border-l-4 border-secondary shadow-sm'
+                        : 'text-white/80 hover:text-white hover:bg-primary-container'
+                    )
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      <span
+                        className="material-symbols-outlined text-xl shrink-0"
+                        data-weight={isActive ? 'fill' : '0'}
+                      >
+                        {item.icon}
+                      </span>
+                      <span className="truncate">{item.label}</span>
+                    </>
+                  )}
+                </NavLink>
+              )
+            }
+
+            // Parent menu item with children (dropdown expand/collapse)
+            return (
+              <div key={item.path} className="space-y-1">
+                <div
+                  className={cn(
+                    'group flex items-center justify-between rounded-lg transition-all duration-150',
+                    isParentActive
+                      ? 'bg-secondary-container text-on-secondary-container font-semibold border-l-4 border-secondary shadow-sm'
+                      : isChildActive
+                      ? 'bg-white/10 text-white font-medium'
+                      : 'text-white/80 hover:text-white hover:bg-primary-container'
+                  )}
+                >
+                  <NavLink
+                    to={item.path}
+                    onClick={() => handleParentClick(item)}
+                    className="flex items-center gap-3 px-3.5 py-2.5 flex-1 min-w-0"
                   >
-                    {item.icon}
-                  </span>
-                  <span className="truncate">{item.label}</span>
-                </>
-              )}
-            </NavLink>
-          ))}
+                    <span
+                      className="material-symbols-outlined text-xl shrink-0"
+                      data-weight={isParentActive || isChildActive ? 'fill' : '0'}
+                    >
+                      {item.icon}
+                    </span>
+                    <span className="truncate text-sm">{item.label}</span>
+                  </NavLink>
+
+                  <button
+                    type="button"
+                    onClick={(e) => toggleMenu(item.path, e)}
+                    className="p-2 mr-1 rounded hover:bg-black/10 dark:hover:bg-white/10 text-inherit opacity-80 hover:opacity-100 transition-opacity shrink-0"
+                    title={isExpanded ? 'Thu gọn' : 'Mở rộng'}
+                    aria-label={isExpanded ? 'Thu gọn' : 'Mở rộng'}
+                  >
+                    <span
+                      className={cn(
+                        'material-symbols-outlined text-lg transition-transform duration-200 block',
+                        isExpanded ? 'rotate-180' : 'rotate-0'
+                      )}
+                    >
+                      keyboard_arrow_down
+                    </span>
+                  </button>
+                </div>
+
+                {/* Submenu Children */}
+                {isExpanded && (
+                  <div className="ml-3 pl-2.5 border-l-2 border-white/20 space-y-1 pt-0.5 pb-1 transition-all duration-200">
+                    {item.children!.map((child) => (
+                      <NavLink
+                        key={child.path}
+                        to={child.path}
+                        onClick={onCloseMobile}
+                        className={({ isActive }) =>
+                          cn(
+                            'flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150',
+                            isActive
+                              ? 'bg-secondary-container text-on-secondary-container font-semibold border-l-4 border-secondary shadow-xs'
+                              : 'text-white/75 hover:text-white hover:bg-white/10'
+                          )
+                        }
+                      >
+                        {({ isActive }) => (
+                          <>
+                            <span
+                              className="material-symbols-outlined text-lg shrink-0"
+                              data-weight={isActive ? 'fill' : '0'}
+                            >
+                              {child.icon}
+                            </span>
+                            <span className="truncate">{child.label}</span>
+                          </>
+                        )}
+                      </NavLink>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          })}
         </nav>
 
         {/* AI Assistant Button at bottom */}

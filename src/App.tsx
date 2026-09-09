@@ -11,15 +11,16 @@ import { VotingPage } from '@/pages/VotingPage'
 import { ReportPage } from '@/pages/ReportPage'
 import { AiAgentPage } from '@/pages/AiAgentPage'
 import { AdminPage } from '@/pages/AdminPage'
+import { Home } from '@/pages/Home'
 
 export function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainLayout />}>
-          <Route index element={<OverviewPage />} />
+          <Route index element={<Home />} />
+          <Route path='overview' element={<OverviewPage />} />
           <Route path="map" element={<GisMapPage />} />
-          <Route path="phan-anh-hien-truong" element={<SceneReportPage />} />
           <Route path="report-scene" element={<SceneReportPage />} />
           <Route path="camera" element={<CameraPage />} />
           <Route path="calendar" element={<CalendarPage />} />
