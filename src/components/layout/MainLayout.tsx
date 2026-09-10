@@ -16,7 +16,7 @@ export const MainLayout: React.FC = () => {
 
   const handleToggleRole = (newRole: 'cadre' | 'citizen') => {
     if (newRole === 'citizen') {
-      navigate('/citizen/services')
+      navigate('/citizen/news')
     } else {
       navigate('/')
     }
