@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { cn } from '@/lib/utils'
+
+export type RoleType = 'cadre' | 'citizen'
 
 interface SidebarProps {
   isOpenMobile?: boolean
   onCloseMobile?: () => void
+  onToggleRole?: (role: RoleType) => void
 }
 
 interface NavSubItem {
@@ -28,6 +31,7 @@ const navItems: NavItem[] = [
     icon: 'map',
     children: [
       { label: 'Tổng quan', path: '/overview', icon: 'dashboard' },
+      { label: 'Bản đồ GIS', path: '/map', icon: 'map' },
       { label: 'Phản ánh hiện trường', path: '/report-scene', icon: 'campaign' },
       { label: 'Camera an ninh', path: '/camera', icon: 'videocam' },
     ],
@@ -43,8 +47,10 @@ const navItems: NavItem[] = [
 export const Sidebar: React.FC<SidebarProps> = ({
   isOpenMobile = false,
   onCloseMobile,
+  onToggleRole,
 }) => {
   const location = useLocation()
+  const navigate = useNavigate()
 
   // Track expanded state for menu items with children
   const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>(() => {
@@ -86,11 +92,25 @@ export const Sidebar: React.FC<SidebarProps> = ({
   }
 
   const handleParentClick = (item: NavItem) => {
-    // When clicking parent: expand the dropdown and navigate to item.path (/overview)
     setExpandedMenus((prev) => ({
       ...prev,
       [item.path]: true,
     }))
+    if (onCloseMobile) {
+      onCloseMobile()
+    }
+  }
+
+  const handleRoleSwitch = (newRole: 'cadre' | 'citizen') => {
+    if (onToggleRole) {
+      onToggleRole(newRole)
+    } else {
+      if (newRole === 'citizen') {
+        navigate('/citizen/services')
+      } else {
+        navigate('/')
+      }
+    }
     if (onCloseMobile) {
       onCloseMobile()
     }
@@ -113,7 +133,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         )}
       >
         {/* Header / Commune Emblem */}
-        <div className="flex items-center gap-3 px-3 mb-6">
+        <div className="flex items-center gap-3 px-3 mb-4">
           <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-md shrink-0 border border-amber-300 overflow-hidden">
             <span className="material-symbols-outlined text-primary text-2xl" data-weight="fill">
               account_balance
@@ -125,6 +145,26 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </h1>
             <p className="text-xs text-white/80 truncate">Hệ thống điều hành số</p>
           </div>
+        </div>
+
+        {/* ROLE SWITCHER: CÁN BỘ ↔ NHÂN DÂN */}
+        <div className="bg-black/25 p-1 rounded-xl flex items-center mb-5 border border-white/10 shadow-inner">
+          <button
+            type="button"
+            onClick={() => handleRoleSwitch('cadre')}
+            className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold bg-white text-primary shadow-sm transition-all"
+          >
+            <span className="material-symbols-outlined text-sm">badge</span>
+            <span>Cán bộ</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => handleRoleSwitch('citizen')}
+            className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold text-white/70 hover:text-white hover:bg-white/10 transition-all"
+          >
+            <span className="material-symbols-outlined text-sm">groups</span>
+            <span>Nhân dân</span>
+          </button>
         </div>
 
         {/* Navigation Items */}
@@ -275,3 +315,5 @@ export const Sidebar: React.FC<SidebarProps> = ({
     </>
   )
 }
+
+export default Sidebar

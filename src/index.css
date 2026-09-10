@@ -19,8 +19,8 @@ body {
   background-color: #f9fafb;
   margin: 0;
   padding: 0;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .material-symbols-outlined {
