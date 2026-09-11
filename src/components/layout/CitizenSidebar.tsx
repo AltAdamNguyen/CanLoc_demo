@@ -14,13 +14,13 @@ interface NavItem {
 }
 
 const citizenNavItems: NavItem[] = [
-  { label: 'Tin tức & chỉ đạo', path: '/citizen/news', icon: 'newspaper' },
-  { label: 'Dịch vụ công & TTHC', path: '/citizen/services', icon: 'assignment' },
+  // { label: 'Tin tức & chỉ đạo', path: '/citizen/news', icon: 'newspaper' },
+  { label: 'Hướng dẫn TTHC', path: '/citizen/services', icon: 'assignment' },
   { label: 'Lịch công tác', path: '/citizen/schedule', icon: 'calendar_month' },
   { label: 'Văn bản pháp quy', path: '/citizen/documents', icon: 'policy' },
   { label: 'Thông tin lãnh đạo', path: '/citizen/leaders', icon: 'groups' },
   { label: 'Bản đồ số GIS & Điểm nóng', path: '/citizen/map-gis', icon: 'explore' },
-  { label: 'Quản lý phản ánh', path: '/citizen/reports', icon: 'campaign' },
+  { label: 'Theo dõi phản ánh', path: '/citizen/reports', icon: 'campaign' },
   { label: 'Camera an ninh', path: '/citizen/camera', icon: 'videocam' },
 ]
 
@@ -124,7 +124,7 @@ export const CitizenSidebar: React.FC<CitizenSidebarProps> = ({ onToggleRole }) 
                 UBND Xã Can Lộc
               </div>
               <div className="text-xs text-on-surface-variant font-medium">
-                Cổng Dịch Vụ Công Trực Tuyến & Thông Tin Công Dân
+                Cổng Tiếp Nhận Phản Ánh & Hỗ Trợ Người Dân
               </div>
             </div>
           </div>
@@ -149,7 +149,7 @@ export const CitizenSidebar: React.FC<CitizenSidebarProps> = ({ onToggleRole }) 
 
       {/* 3. HORIZONTAL NAVIGATION BAR (Identical to citizen/service.html) */}
       <nav className="bg-primary text-on-primary px-2 sm:px-4 md:px-6 shadow-inner w-full">
-        <div className="w-full max-w-[1440px] mx-auto flex items-center justify-start xl:justify-center gap-3 overflow-x-auto lg:overflow-visible py-1 text-xs xl:text-[13px] scrollbar-none">
+        <div className="w-full max-w-[1440px] mx-auto px-4 md:px-8 flex items-center justify-start gap-4 overflow-x-auto lg:overflow-visible py-1 text-xs xl:text-[13px] scrollbar-none">
           {citizenNavItems.map((item) => {
             const isActive = location.pathname === item.path
             return (

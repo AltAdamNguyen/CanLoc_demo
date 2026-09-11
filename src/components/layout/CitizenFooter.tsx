@@ -15,7 +15,7 @@ export const CitizenFooter: React.FC = () => {
             </div>
             <div>
               <h3 className="text-sm font-extrabold uppercase text-white tracking-wide leading-tight">
-                CỔNG THÔNG TIN ĐIỆN TỬ ỦY BAN NHÂN DÂN XÃ CAN LỘC
+                Cổng tiếp nhận phản ánh và hỗ trợ người dân
               </h3>
               <p className="text-[11px] text-red-200">
                 Cơ quan chủ quản: UBND Xã Can Lộc - Huyện Can Lộc - Tỉnh Hà Tĩnh

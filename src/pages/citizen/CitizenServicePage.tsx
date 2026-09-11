@@ -153,7 +153,7 @@ export const CitizenServicePage: React.FC = () => {
             </div>
             <div className="flex items-center gap-2 w-full md:w-auto shrink-0">
               <button
-                onClick={() => {}}
+                onClick={() => { }}
                 className="w-full md:w-auto px-6 py-2.5 rounded-lg bg-primary hover:bg-primary-container text-white font-semibold text-sm flex items-center justify-center gap-2 shadow transition-colors"
               >
                 <span className="material-symbols-outlined text-lg">manage_search</span>
@@ -272,17 +272,15 @@ export const CitizenServicePage: React.FC = () => {
                   <button
                     key={cat.key}
                     onClick={() => setSelectedCategory(cat.key)}
-                    className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${
-                      isActive
-                        ? 'bg-primary text-white shadow-sm'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
+                    className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 ${isActive
+                      ? 'bg-primary text-white shadow-sm'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
                   >
                     <span>{cat.label}</span>
                     <span
-                      className={`px-1.5 py-0.2 rounded-full text-[10px] ${
-                        isActive ? 'bg-primary-container text-white' : 'bg-gray-200 text-gray-700'
-                      }`}
+                      className={`px-1.5 py-0.2 rounded-full text-[10px] ${isActive ? 'bg-primary-container text-white' : 'bg-gray-200 text-gray-700'
+                        }`}
                     >
                       {cat.count}
                     </span>
@@ -324,11 +322,10 @@ export const CitizenServicePage: React.FC = () => {
                       <div>
                         <div className="flex flex-wrap items-center gap-2 mb-1">
                           <span
-                            className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                              item.type === 'TOÀN TRÌNH'
-                                ? 'bg-primary text-white'
-                                : 'bg-secondary text-white'
-                            }`}
+                            className={`px-2 py-0.5 rounded text-[10px] font-bold ${item.type === 'TOÀN TRÌNH'
+                              ? 'bg-primary text-white'
+                              : 'bg-secondary text-white'
+                              }`}
                           >
                             DVC {item.type}
                           </span>
@@ -354,13 +351,13 @@ export const CitizenServicePage: React.FC = () => {
                         <span className="material-symbols-outlined text-base">help_outline</span>
                         <span>Hướng dẫn</span>
                       </button>
-                      <button
+                      {/* <button
                         onClick={() => setApplyModalItem(item)}
                         className="px-4 py-2 rounded-lg bg-primary hover:bg-primary-container text-white text-xs font-semibold flex items-center gap-1.5 shadow transition-colors"
                       >
                         <span className="material-symbols-outlined text-base">touch_app</span>
                         <span>Nộp trực tuyến</span>
-                      </button>
+                      </button> */}
                     </div>
                   </div>
 
@@ -502,7 +499,7 @@ export const CitizenServicePage: React.FC = () => {
           </div>
 
           {/* 4 Steps Guide Card */}
-          <div className="bg-white rounded-xl p-5 shadow-xs border border-gray-100">
+          {/* <div className="bg-white rounded-xl p-5 shadow-xs border border-gray-100">
             <div className="flex items-center gap-2 mb-3">
               <div className="w-8 h-8 rounded-lg bg-red-100 text-primary flex items-center justify-center">
                 <span className="material-symbols-outlined text-xl">how_to_reg</span>
@@ -546,7 +543,7 @@ export const CitizenServicePage: React.FC = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/* Community Digital Transformation Support Team */}
           <div className="bg-gradient-to-br from-primary-container to-primary rounded-xl p-5 text-white shadow-md relative overflow-hidden">

@@ -3,7 +3,7 @@ export type UserRole = 'cadre' | 'citizen'
 export const ROLE_STORAGE_KEY = 'user_role'
 
 export const CADRE_HOME = '/home'
-export const CITIZEN_HOME = '/citizen/news'
+export const CITIZEN_HOME = '/citizen/services'
 
 export function isCitizenRoute(pathname: string): boolean {
   return pathname.startsWith('/citizen')
