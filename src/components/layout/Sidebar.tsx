@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { cn } from '@/lib/utils'
+import { UserRole, setStoredRole, CADRE_HOME, CITIZEN_HOME } from '@/lib/role'
 
-export type RoleType = 'cadre' | 'citizen'
+export type RoleType = UserRole
 
 interface SidebarProps {
   isOpenMobile?: boolean
@@ -19,6 +20,7 @@ interface NavSubItem {
 interface NavItem {
   label: string
   path: string
+  redirectPath?: string
   icon: string
   children?: NavSubItem[]
 }
@@ -28,6 +30,7 @@ const navItems: NavItem[] = [
   {
     label: 'Bản đồ GIS',
     path: '/map',
+    redirectPath: '/overview',
     icon: 'map',
     children: [
       { label: 'Tổng quan', path: '/overview', icon: 'dashboard' },
@@ -59,6 +62,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       if (item.children) {
         const isCurrentOrChild =
           location.pathname === item.path ||
+          (item.redirectPath && location.pathname === item.redirectPath) ||
           item.children.some((c) => location.pathname === c.path)
         initial[item.path] = isCurrentOrChild
       }
@@ -72,6 +76,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       if (item.children) {
         const isCurrentOrChild =
           location.pathname === item.path ||
+          (item.redirectPath && location.pathname === item.redirectPath) ||
           item.children.some((c) => location.pathname === c.path)
         if (isCurrentOrChild) {
           setExpandedMenus((prev) => ({ ...prev, [item.path]: true }))
@@ -80,35 +85,26 @@ export const Sidebar: React.FC<SidebarProps> = ({
     })
   }, [location.pathname])
 
-  const toggleMenu = (path: string, e?: React.MouseEvent) => {
-    if (e) {
-      e.preventDefault()
-      e.stopPropagation()
-    }
-    setExpandedMenus((prev) => ({
-      ...prev,
-      [path]: !prev[path],
-    }))
-  }
-
   const handleParentClick = (item: NavItem) => {
+    // Toggle dropdown open/close directly when clicking parent item
     setExpandedMenus((prev) => ({
       ...prev,
-      [item.path]: true,
+      [item.path]: !prev[item.path],
     }))
     if (onCloseMobile) {
       onCloseMobile()
     }
   }
 
-  const handleRoleSwitch = (newRole: 'cadre' | 'citizen') => {
+  const handleRoleSwitch = (newRole: RoleType) => {
+    setStoredRole(newRole)
     if (onToggleRole) {
       onToggleRole(newRole)
     } else {
       if (newRole === 'citizen') {
-        navigate('/citizen/services')
+        navigate(CITIZEN_HOME)
       } else {
-        navigate('/')
+        navigate(CADRE_HOME)
       }
     }
     if (onCloseMobile) {
@@ -223,35 +219,29 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   )}
                 >
                   <NavLink
-                    to={item.path}
+                    to={item.redirectPath || item.path}
                     onClick={() => handleParentClick(item)}
-                    className="flex items-center gap-3 px-3.5 py-2.5 flex-1 min-w-0"
+                    className="flex items-center justify-between gap-3 px-3.5 py-2.5 w-full min-w-0"
                   >
-                    <span
-                      className="material-symbols-outlined text-xl shrink-0"
-                      data-weight={isParentActive || isChildActive ? 'fill' : '0'}
-                    >
-                      {item.icon}
-                    </span>
-                    <span className="truncate text-sm">{item.label}</span>
-                  </NavLink>
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span
+                        className="material-symbols-outlined text-xl shrink-0"
+                        data-weight={isParentActive || isChildActive ? 'fill' : '0'}
+                      >
+                        {item.icon}
+                      </span>
+                      <span className="truncate text-sm">{item.label}</span>
+                    </div>
 
-                  <button
-                    type="button"
-                    onClick={(e) => toggleMenu(item.path, e)}
-                    className="p-2 mr-1 rounded hover:bg-black/10 dark:hover:bg-white/10 text-inherit opacity-80 hover:opacity-100 transition-opacity shrink-0"
-                    title={isExpanded ? 'Thu gọn' : 'Mở rộng'}
-                    aria-label={isExpanded ? 'Thu gọn' : 'Mở rộng'}
-                  >
                     <span
                       className={cn(
-                        'material-symbols-outlined text-lg transition-transform duration-200 block',
+                        'material-symbols-outlined text-lg transition-transform duration-200 shrink-0 opacity-80 group-hover:opacity-100',
                         isExpanded ? 'rotate-180' : 'rotate-0'
                       )}
                     >
                       keyboard_arrow_down
                     </span>
-                  </button>
+                  </NavLink>
                 </div>
 
                 {/* Submenu Children */}

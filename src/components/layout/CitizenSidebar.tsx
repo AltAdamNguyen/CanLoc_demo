@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { cn } from '@/lib/utils'
+import { UserRole, setStoredRole, CADRE_HOME, CITIZEN_HOME } from '@/lib/role'
 
 interface CitizenSidebarProps {
-  onToggleRole?: (role: 'cadre' | 'citizen') => void
+  onToggleRole?: (role: UserRole) => void
 }
 
 interface NavItem {
@@ -28,14 +29,15 @@ export const CitizenSidebar: React.FC<CitizenSidebarProps> = ({ onToggleRole }) 
   const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState('')
 
-  const handleRoleSwitch = (newRole: 'cadre' | 'citizen') => {
+  const handleRoleSwitch = (newRole: UserRole) => {
+    setStoredRole(newRole)
     if (onToggleRole) {
       onToggleRole(newRole)
     } else {
       if (newRole === 'cadre') {
-        navigate('/')
+        navigate(CADRE_HOME)
       } else {
-        navigate('/citizen/services')
+        navigate(CITIZEN_HOME)
       }
     }
   }

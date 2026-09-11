@@ -43,7 +43,7 @@ export function App() {
           <Route path="admin" element={<AdminPage />} />
 
           {/* Nhân Dân (Citizen) Routes */}
-          <Route path="citizen" element={<Navigate to="/citizen/services" replace />} />
+          <Route path="citizen" element={<Navigate to="/citizen/news" replace />} />
           <Route path="citizen/news" element={<CitizenNewsPage />} />
           <Route path="citizen/services" element={<CitizenServicePage />} />
           <Route path="citizen/service" element={<Navigate to="/citizen/services" replace />} />
