@@ -51,7 +51,7 @@ export const CitizenSidebar: React.FC<CitizenSidebarProps> = ({ onToggleRole }) 
     <header className="w-full bg-surface-container-lowest shadow-md z-40 sticky top-0">
       {/* 1. TOP RED MICRO-BAR (Identical to citizen/service.html) */}
       <div className="bg-primary text-on-primary text-xs py-2 px-4 md:px-8 border-b border-primary-container/60">
-        <div className="max-w-[1440px] mx-auto flex flex-wrap items-center justify-between gap-3">
+        <div className="max-w-[1440px] mx-auto px-4 md:px-8 flex flex-wrap items-center justify-between gap-3">
           {/* Left information */}
           <div className="flex items-center gap-4 flex-wrap text-[11px] md:text-xs">
             <span className="flex items-center gap-1.5 text-secondary-fixed font-semibold">
@@ -102,15 +102,6 @@ export const CitizenSidebar: React.FC<CitizenSidebarProps> = ({ onToggleRole }) 
               <span className="material-symbols-outlined text-[15px]">campaign</span>
               <span>Tiếp nhận hồ sơ số hóa đợt 2</span>
             </div>
-
-            <button className="flex items-center gap-1.5 bg-secondary-fixed text-on-secondary-fixed hover:bg-secondary-fixed-dim px-3 py-1 rounded text-xs font-semibold transition-colors shadow-xs">
-              <span className="material-symbols-outlined text-[16px]">badge</span>
-              <span className="hidden sm:inline">Đăng nhập VNeID</span>
-            </button>
-
-            <div className="w-7 h-7 rounded-full bg-primary-container flex items-center justify-center text-on-primary">
-              <span className="material-symbols-outlined text-[16px]">person</span>
-            </div>
           </div>
         </div>
       </div>
@@ -156,7 +147,7 @@ export const CitizenSidebar: React.FC<CitizenSidebarProps> = ({ onToggleRole }) 
 
       {/* 3. HORIZONTAL NAVIGATION BAR (Identical to citizen/service.html) */}
       <nav className="bg-primary text-on-primary px-2 sm:px-4 md:px-6 shadow-inner w-full">
-        <div className="w-full max-w-[1800px] mx-auto flex items-center justify-start xl:justify-center gap-2 overflow-x-auto lg:overflow-visible py-1 text-xs xl:text-[13px] scrollbar-none">
+        <div className="w-full max-w-[1440px] mx-auto flex items-center justify-start xl:justify-center gap-3 overflow-x-auto lg:overflow-visible py-1 text-xs xl:text-[13px] scrollbar-none">
           {citizenNavItems.map((item) => {
             const isActive = location.pathname === item.path
             return (

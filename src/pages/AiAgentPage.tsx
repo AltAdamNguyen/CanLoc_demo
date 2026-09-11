@@ -16,8 +16,7 @@ export const AiAgentPage: React.FC = () => {
   const historyItems = [
     { id: '1', title: 'Báo cáo tiến độ dự án đường X', time: 'today', active: true },
     { id: '2', title: 'Tóm tắt văn bản số 12/UBND về quản lý đất đai', time: 'today', active: false },
-    { id: '3', title: 'Soạn thảo giấy mời họp GPMB', time: 'yesterday', active: false },
-    { id: '4', title: 'Quy trình cấp giấy phép xây dựng nhà ở riêng lẻ', time: 'yesterday', active: false },
+    { id: '3', title: 'Quy trình cấp giấy phép xây dựng nhà ở riêng lẻ', time: 'yesterday', active: false },
   ]
 
   const handleSendMessage = (contentToSend?: string) => {
@@ -120,17 +119,6 @@ export const AiAgentPage: React.FC = () => {
           <div className="font-label-sm text-on-surface-variant px-2 py-1 mt-4 uppercase tracking-wider font-semibold">
             Hôm qua
           </div>
-          <button
-            onClick={() => handleSendMessage('Soạn thảo giấy mời họp GPMB tuyến liên thôn')}
-            className="w-full text-left px-3 py-2 rounded-md hover:bg-surface-container-low flex items-start gap-2 group transition-colors cursor-pointer"
-          >
-            <span className="material-symbols-outlined text-on-surface-variant text-sm mt-0.5">
-              chat_bubble
-            </span>
-            <span className="font-body-md text-on-surface-variant line-clamp-2 leading-tight group-hover:text-on-surface transition-colors">
-              Soạn thảo giấy mời họp GPMB
-            </span>
-          </button>
           <button
             onClick={() => handleSendMessage('Quy trình cấp giấy phép xây dựng nhà ở riêng lẻ')}
             className="w-full text-left px-3 py-2 rounded-md hover:bg-surface-container-low flex items-start gap-2 group transition-colors cursor-pointer"
@@ -247,17 +235,15 @@ export const AiAgentPage: React.FC = () => {
                     </div>
                   )}
                   <div
-                    className={`px-4 py-3 rounded-2xl max-w-xl text-sm leading-relaxed shadow-xs ${
-                      msg.sender === 'user'
-                        ? 'bg-primary text-white rounded-tr-xs'
-                        : 'bg-surface text-on-surface border border-outline-variant rounded-tl-xs whitespace-pre-line'
-                    }`}
+                    className={`px-4 py-3 rounded-2xl max-w-xl text-sm leading-relaxed shadow-xs ${msg.sender === 'user'
+                      ? 'bg-primary text-white rounded-tr-xs'
+                      : 'bg-surface text-on-surface border border-outline-variant rounded-tl-xs whitespace-pre-line'
+                      }`}
                   >
                     {msg.text}
                     <span
-                      className={`text-[10px] mt-1.5 block text-right ${
-                        msg.sender === 'user' ? 'text-white/70' : 'text-gray-400'
-                      }`}
+                      className={`text-[10px] mt-1.5 block text-right ${msg.sender === 'user' ? 'text-white/70' : 'text-gray-400'
+                        }`}
                     >
                       {msg.time}
                     </span>

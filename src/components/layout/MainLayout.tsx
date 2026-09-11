@@ -41,7 +41,7 @@ export const MainLayout: React.FC = () => {
         <aside aria-label="Kênh hỗ trợ trực tuyến" className="fixed bottom-6 right-6 z-50 flex flex-col gap-2.5">
           {/* Chatbot AI Support */}
           <Link
-            to="/ai-agent"
+            to="/citizen/news"
             className="w-11 h-11 rounded-full bg-amber-500 hover:bg-amber-600 text-white shadow-xl flex items-center justify-center transition-transform hover:scale-110 border border-amber-300 relative group"
             title="Trợ lý ảo AI Can Lộc 24/7"
           >

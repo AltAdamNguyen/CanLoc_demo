@@ -153,14 +153,12 @@ export const CitizenCameraPage: React.FC = () => {
         popupAnchor: [0, -14],
         html: `
           <div class="relative flex items-center justify-center cursor-pointer group">
-            ${
-              isAlert
-                ? '<span class="absolute w-7 h-7 rounded-full bg-red-500 animate-ping opacity-75"></span>'
-                : ''
-            }
-            <div class="w-6 h-6 rounded-full ${
-              isAlert ? 'bg-red-600' : 'bg-slate-900'
-            } text-white flex items-center justify-center text-[10px] font-bold shadow-md border-2 border-white hover:scale-125 transition-transform">
+            ${isAlert
+            ? '<span class="absolute w-7 h-7 rounded-full bg-red-500 animate-ping opacity-75"></span>'
+            : ''
+          }
+            <div class="w-6 h-6 rounded-full ${isAlert ? 'bg-red-600' : 'bg-slate-900'
+          } text-white flex items-center justify-center text-[10px] font-bold shadow-md border-2 border-white hover:scale-125 transition-transform">
               ${camNum}
             </div>
           </div>
@@ -329,25 +327,22 @@ export const CitizenCameraPage: React.FC = () => {
           <span className="text-slate-500 font-semibold mr-1">Chế độ xem:</span>
           <button
             onClick={() => setGridMode('2x2')}
-            className={`px-2.5 py-1 rounded font-semibold transition flex items-center gap-1 ${
-              gridMode === '2x2' ? 'bg-[#b91c1c] text-white shadow-xs' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
-            }`}
+            className={`px-2.5 py-1 rounded font-semibold transition flex items-center gap-1 ${gridMode === '2x2' ? 'bg-[#b91c1c] text-white shadow-xs' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
+              }`}
           >
             <i className="fa-solid fa-table-cells-large"></i> 2x2
           </button>
           <button
             onClick={() => setGridMode('3x3')}
-            className={`px-2.5 py-1 rounded font-semibold transition flex items-center gap-1 ${
-              gridMode === '3x3' ? 'bg-[#b91c1c] text-white shadow-xs' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
-            }`}
+            className={`px-2.5 py-1 rounded font-semibold transition flex items-center gap-1 ${gridMode === '3x3' ? 'bg-[#b91c1c] text-white shadow-xs' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
+              }`}
           >
             <i className="fa-solid fa-table-cells"></i> 3x3 Lưới chính
           </button>
           <button
             onClick={() => setGridMode('4x4')}
-            className={`px-2.5 py-1 rounded font-semibold transition flex items-center gap-1 ${
-              gridMode === '4x4' ? 'bg-[#b91c1c] text-white shadow-xs' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
-            }`}
+            className={`px-2.5 py-1 rounded font-semibold transition flex items-center gap-1 ${gridMode === '4x4' ? 'bg-[#b91c1c] text-white shadow-xs' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
+              }`}
           >
             <i className="fa-solid fa-grip"></i> 4x4
           </button>
@@ -383,11 +378,10 @@ export const CitizenCameraPage: React.FC = () => {
               <button
                 key={loc.id}
                 onClick={() => setFilterLocation(loc.id)}
-                className={`px-3 py-1 rounded-full whitespace-nowrap font-medium transition ${
-                  isActive
-                    ? 'bg-slate-800 text-white font-semibold shadow-xs'
-                    : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200'
-                }`}
+                className={`px-3 py-1 rounded-full whitespace-nowrap font-medium transition ${isActive
+                  ? 'bg-slate-800 text-white font-semibold shadow-xs'
+                  : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200'
+                  }`}
               >
                 {loc.label}
               </button>
@@ -396,324 +390,153 @@ export const CitizenCameraPage: React.FC = () => {
         </div>
       </div>
 
-      {/* BEGIN: MainTwoColumnsSection */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-        {/* LEFT COLUMN: Realtime Camera Grid (8 cols in lg) */}
-        <section className="lg:col-span-8 space-y-4" data-purpose="camera-realtime-grid">
-          <div
-            className={`grid gap-3.5 ${
-              gridMode === '2x2'
-                ? 'grid-cols-1 sm:grid-cols-2'
-                : gridMode === '4x4'
-                ? 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-3'
-                : 'grid-cols-1 md:grid-cols-2'
+      {/* BEGIN: Realtime Camera Grid */}
+      <section className=" gap-4" data-purpose="camera-realtime-grid">
+        <div
+          className={`grid gap-3.5 ${gridMode === '2x2'
+            ? 'grid-cols-1 sm:grid-cols-2'
+            : gridMode === '4x4'
+              ? 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-3'
+              : 'grid-cols-1 md:grid-cols-2'
             }`}
-          >
-            {filteredCams.map((cam) => (
-              <article
-                key={cam.id}
-                className="bg-slate-900 rounded-lg overflow-hidden border border-slate-700 shadow-md flex flex-col justify-between"
-              >
-                <div className="relative bg-slate-950 aspect-video flex items-center justify-center overflow-hidden group">
-                  {/* Live Video Feed Representation */}
-                  <div className="w-full h-full bg-gradient-to-tr from-slate-900 via-slate-800 to-slate-900 flex flex-col items-center justify-center text-slate-600 relative">
-                    <i className={`${cam.icon} text-4xl mb-2 text-slate-700`}></i>
-                    <span className="text-xs text-slate-400 font-mono">
-                      {cam.code} [{cam.quality}]
-                    </span>
-                    <span className="text-[10px] text-slate-500">
-                      Bitrate: {cam.bitrate} | Ping: 12ms
-                    </span>
+        >
+          {filteredCams.map((cam) => (
+            <article
+              key={cam.id}
+              className="bg-slate-900 rounded-lg overflow-hidden border border-slate-700 shadow-md flex flex-col justify-between"
+            >
+              <div className="relative bg-slate-950 aspect-video flex items-center justify-center overflow-hidden group">
+                {/* Live Video Feed Representation */}
+                <div className="w-full h-full bg-gradient-to-tr from-slate-900 via-slate-800 to-slate-900 flex flex-col items-center justify-center text-slate-600 relative">
+                  <i className={`${cam.icon} text-4xl mb-2 text-slate-700`}></i>
+                  <span className="text-xs text-slate-400 font-mono">
+                    {cam.code} [{cam.quality}]
+                  </span>
+                  <span className="text-[10px] text-slate-500">
+                    Bitrate: {cam.bitrate} | Ping: 12ms
+                  </span>
 
-                    {/* Street Detection Overlay simulation */}
-                    <div className="absolute inset-0 bg-black/20 pointer-events-none"></div>
-                    {cam.aiNote && (
-                      <div className="absolute top-8 left-10 border border-yellow-400/70 bg-yellow-400/10 px-1 py-0.5 text-[9px] text-yellow-300 font-mono rounded">
-                        {cam.aiNote}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Top Stream Overlay Badges */}
-                  <div className="absolute top-2 left-2 flex items-center gap-1.5">
-                    <span className="bg-red-600 text-white text-[10px] font-black px-2 py-0.5 rounded flex items-center gap-1 shadow-xs">
-                      <span className="w-1.5 h-1.5 rounded-full bg-white cam-live-indicator"></span> LIVE
-                    </span>
-                    <span className="bg-slate-900/80 backdrop-blur-xs text-slate-200 text-[10px] font-mono px-1.5 py-0.5 rounded border border-slate-700">
-                      {cam.code.replace('CANLOC-', '')}
-                    </span>
-                    <span className="bg-slate-900/80 backdrop-blur-xs text-slate-200 text-[10px] font-mono px-1.5 py-0.5 rounded border border-slate-700">
-                      1080P
-                    </span>
-                  </div>
-
-                  <div className="absolute top-2 right-2">
-                    <span
-                      className={`backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1 shadow-xs ${
-                        cam.statusType === 'alert'
-                          ? 'bg-red-600 animate-pulse'
-                          : cam.statusType === 'anpr'
-                          ? 'bg-blue-600'
-                          : 'bg-amber-600/90'
-                      }`}
-                    >
-                      {cam.statusBadge}
-                    </span>
-                  </div>
-
-                  {/* Bottom Stream Location */}
-                  <div className="absolute bottom-2 left-2 right-2 flex justify-between items-end text-white text-xs pointer-events-none">
-                    <div className="bg-slate-950/80 backdrop-blur-xs px-2 py-1 rounded border border-slate-700/80 max-w-[80%]">
-                      <div className="font-bold text-amber-300 text-xs flex items-center gap-1 truncate">
-                        <i className="fa-solid fa-location-dot text-red-500"></i> {cam.name}
-                      </div>
-                      <div className="text-[10px] text-slate-300 font-mono">
-                        {cam.timeStr} | Bitrate: {cam.bitrate}
-                      </div>
+                  {/* Street Detection Overlay simulation */}
+                  <div className="absolute inset-0 bg-black/20 pointer-events-none"></div>
+                  {cam.aiNote && (
+                    <div className="absolute top-8 left-10 border border-yellow-400/70 bg-yellow-400/10 px-1 py-0.5 text-[9px] text-yellow-300 font-mono rounded">
+                      {cam.aiNote}
                     </div>
-                    {cam.highlightBadge && (
-                      <span className="bg-blue-600/90 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-xs">
-                        {cam.highlightBadge}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Cam Action Bar */}
-                <div className="bg-slate-900 px-3 py-2 flex items-center justify-between border-t border-slate-800 text-slate-300 text-xs">
-                  <div className="flex items-center space-x-3">
-                    <button
-                      onClick={() => setSelectedCam(cam)}
-                      className="hover:text-white hover:scale-110 transition"
-                      title="Phóng to luồng"
-                    >
-                      <i className="fa-solid fa-magnifying-glass-plus"></i>
-                    </button>
-                    <button
-                      onClick={() => handleAction(`Đã chụp ảnh bằng chứng từ ${cam.code}`)}
-                      className="hover:text-white hover:scale-110 transition"
-                      title="Chụp ảnh bằng chứng"
-                    >
-                      <i className="fa-solid fa-camera"></i>
-                    </button>
-                    <button
-                      onClick={() => handleAction(`Mở bảng điều khiển góc xoay PTZ cho ${cam.code}`)}
-                      className="hover:text-white hover:scale-110 transition"
-                      title="Điều khiển góc xoay PTZ"
-                    >
-                      <i className="fa-solid fa-arrows-up-down-left-right"></i>
-                    </button>
-                    <button
-                      onClick={() => handleAction(`Bật lưới ngắm radar cho ${cam.code}`)}
-                      className="hover:text-white hover:scale-110 transition"
-                      title="Bật lưới radar"
-                    >
-                      <i className="fa-solid fa-crosshairs"></i>
-                    </button>
-                  </div>
-                  {cam.footerInfo ? (
-                    <span className="text-[11px] font-mono bg-slate-800 text-emerald-400 border border-slate-700 px-2 py-0.5 rounded">
-                      {cam.footerInfo}
-                    </span>
-                  ) : (
-                    <button
-                      onClick={() => handleAction(`Đang phát thông điệp cảnh báo qua loa tại ${cam.location}`)}
-                      className="bg-[#b91c1c] hover:bg-red-700 text-white text-[11px] font-bold px-2.5 py-1 rounded flex items-center gap-1.5 shadow-xs transition"
-                    >
-                      <i className="fa-solid fa-bullhorn text-amber-300"></i> Phát loa cảnh báo
-                    </button>
                   )}
                 </div>
-              </article>
-            ))}
-          </div>
 
-          {/* Pagination & Bandwidth status */}
-          <div className="bg-white rounded-lg border border-slate-200 p-3 flex flex-wrap items-center justify-between gap-3 text-xs">
-            <div className="text-slate-600 font-medium">
-              Đang hiển thị <span className="font-bold text-slate-800">{filteredCams.length}/32</span> mắt giám sát
-              trực tiếp • Băng thông đường truyền:{' '}
-              <span className="font-bold text-emerald-600">28.4 MB/s</span> • Độ trễ mạng:{' '}
-              <span className="font-bold text-slate-800">14ms</span>
-            </div>
-            <div className="flex items-center space-x-1.5">
-              <button className="px-2.5 py-1 rounded border border-slate-300 text-slate-600 hover:bg-slate-50 disabled:opacity-50 text-xs font-medium">
-                Trang trước
-              </button>
-              <span className="px-3 py-1 bg-[#b91c1c] text-white font-bold rounded text-xs">Trang 1 / 6</span>
-              <button className="px-2.5 py-1 rounded border border-slate-300 text-slate-600 hover:bg-slate-50 text-xs font-medium">
-                Trang sau
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {/* RIGHT COLUMN: Control, Mini Map & AI Alerts (4 cols in lg) */}
-        <aside className="lg:col-span-4 space-y-4" data-purpose="monitoring-sidebar">
-          {/* 1. Mini GIS Camera Network Map */}
-          <div className="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
-            <div className="p-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
-              <h2 className="font-bold text-xs uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
-                <i className="fa-solid fa-map-location-dot text-[#b91c1c]"></i> Bản đồ Định vị Mạng lưới Camera
-              </h2>
-              <span className="bg-red-100 text-[#b91c1c] font-bold text-[10px] px-2 py-0.5 rounded">
-                32 MẮT ONLINE
-              </span>
-            </div>
-            <div className="relative h-56 border-b border-slate-200 overflow-hidden">
-              <div ref={miniMapContainerRef} className="w-full h-full z-0" />
-              <div className="absolute top-2 right-2 z-[600] pointer-events-none">
-                <span className="text-[10px] font-bold text-slate-700 bg-white/90 px-2 py-0.5 rounded-full border border-slate-300 shadow-xs">
-                  Phủ sóng: 88.5%
-                </span>
-              </div>
-            </div>
-            <div className="p-2.5 bg-slate-50 text-[11px] text-slate-600 flex justify-between items-center">
-              <span className="flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-red-600"></span> Đang trực tiếp
-              </span>
-              <span className="flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-amber-500"></span> Đang cảnh báo
-              </span>
-              <span className="flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-slate-400"></span> Bảo trì
-              </span>
-            </div>
-          </div>
-
-          {/* 2. AI Event Feed Realtime (Cảnh báo thông minh) */}
-          <div className="bg-white rounded-lg border border-slate-200 shadow-xs p-3 space-y-3">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-2">
-              <h2 className="font-bold text-xs uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
-                <i className="fa-solid fa-robot text-[#b91c1c]"></i> Cảnh báo Thông minh (AI Event Feed)
-              </h2>
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-              </span>
-            </div>
-
-            <div className="space-y-2.5 overflow-y-auto max-h-[380px] pr-1 text-xs">
-              {/* Event 1: Mức độ 1 - Giao thông */}
-              <div className="p-2.5 rounded-lg border-l-4 border-red-600 bg-red-50/60 border border-slate-200 space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <span className="bg-red-600 text-white text-[10px] font-extrabold px-1.5 py-0.5 rounded uppercase">
-                    Mức độ 1: Giao thông
+                {/* Top Stream Overlay Badges */}
+                <div className="absolute top-2 left-2 flex items-center gap-1.5">
+                  <span className="bg-red-600 text-white text-[10px] font-black px-2 py-0.5 rounded flex items-center gap-1 shadow-xs">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white cam-live-indicator"></span> LIVE
                   </span>
-                  <span className="text-[10px] text-slate-500 font-mono">10:12 Hôm nay</span>
+                  <span className="bg-slate-900/80 backdrop-blur-xs text-slate-200 text-[10px] font-mono px-1.5 py-0.5 rounded border border-slate-700">
+                    {cam.code.replace('CANLOC-', '')}
+                  </span>
+                  <span className="bg-slate-900/80 backdrop-blur-xs text-slate-200 text-[10px] font-mono px-1.5 py-0.5 rounded border border-slate-700">
+                    1080P
+                  </span>
                 </div>
-                <p className="font-bold text-slate-800 leading-snug">
-                  Phát hiện xe tải che chắn không kỹ làm rơi vãi đất đá
-                </p>
-                <div className="text-[11px] text-slate-600">
-                  <span className="font-semibold text-slate-700">Vị trí:</span> CAM 06 (Tuyến ĐT 548){' '}
-                  <span className="font-bold text-red-700 font-mono">BS: 38C-082.11</span>
-                </div>
-                <div className="flex items-center gap-1.5 pt-1">
-                  <button
-                    onClick={() => handleAction('Đã tạo biên bản điện tử xử phạt xe 38C-082.11')}
-                    className="bg-[#b91c1c] hover:bg-red-800 text-white text-[10px] font-bold px-2 py-1 rounded shadow-xs"
+
+                <div className="absolute top-2 right-2">
+                  <span
+                    className={`backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1 shadow-xs ${cam.statusType === 'alert'
+                      ? 'bg-red-600 animate-pulse'
+                      : cam.statusType === 'anpr'
+                        ? 'bg-blue-600'
+                        : 'bg-amber-600/90'
+                      }`}
                   >
-                    Lập biên bản
+                    {cam.statusBadge}
+                  </span>
+                </div>
+
+                {/* Bottom Stream Location */}
+                <div className="absolute bottom-2 left-2 right-2 flex justify-between items-end text-white text-xs pointer-events-none">
+                  <div className="bg-slate-950/80 backdrop-blur-xs px-2 py-1 rounded border border-slate-700/80 max-w-[80%]">
+                    <div className="font-bold text-amber-300 text-xs flex items-center gap-1 truncate">
+                      <i className="fa-solid fa-location-dot text-red-500"></i> {cam.name}
+                    </div>
+                    <div className="text-[10px] text-slate-300 font-mono">
+                      {cam.timeStr} | Bitrate: {cam.bitrate}
+                    </div>
+                  </div>
+                  {cam.highlightBadge && (
+                    <span className="bg-blue-600/90 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow-xs">
+                      {cam.highlightBadge}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Cam Action Bar */}
+              <div className="bg-slate-900 px-3 py-2 flex items-center justify-between border-t border-slate-800 text-slate-300 text-xs">
+                <div className="flex items-center space-x-3">
+                  <button
+                    onClick={() => setSelectedCam(cam)}
+                    className="hover:text-white hover:scale-110 transition"
+                    title="Phóng to luồng"
+                  >
+                    <i className="fa-solid fa-magnifying-glass-plus"></i>
                   </button>
                   <button
-                    onClick={() => handleAction('Đang phát lại đoạn video sự việc lúc 10:12')}
-                    className="bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-semibold px-2 py-1 rounded border border-slate-300"
+                    onClick={() => handleAction(`Đã chụp ảnh bằng chứng từ ${cam.code}`)}
+                    className="hover:text-white hover:scale-110 transition"
+                    title="Chụp ảnh bằng chứng"
                   >
-                    Xem lại video
-                  </button>
-                </div>
-              </div>
-
-              {/* Event 2: Mức độ 2 - Trật tự */}
-              <div className="p-2.5 rounded-lg border-l-4 border-amber-500 bg-amber-50/60 border border-slate-200 space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <span className="bg-amber-600 text-white text-[10px] font-extrabold px-1.5 py-0.5 rounded uppercase">
-                    Mức độ 2: Trật tự
-                  </span>
-                  <span className="text-[10px] text-slate-500 font-mono">09:45 Hôm nay</span>
-                </div>
-                <p className="font-bold text-slate-800 leading-snug">
-                  Cảnh báo lấn chiếm lòng lề đường họp chợ trái phép
-                </p>
-                <div className="text-[11px] text-slate-600 flex justify-between">
-                  <span>
-                    <span className="font-semibold text-slate-700">Vị trí:</span> CAM 01 (Khu vực Chợ Can Lộc)
-                  </span>
-                  <span className="text-amber-700 font-semibold">Khu vực bán rau quả</span>
-                </div>
-                <div className="flex items-center gap-1.5 pt-1">
-                  <button
-                    onClick={() => handleAction('Đang phát loa nhắc nhở tại Chợ Can Lộc')}
-                    className="bg-amber-700 hover:bg-amber-800 text-white text-[10px] font-bold px-2 py-1 rounded"
-                  >
-                    Phát loa nhắc nhở
+                    <i className="fa-solid fa-camera"></i>
                   </button>
                   <button
-                    onClick={() => handleAction('Đã bỏ qua thông báo')}
-                    className="bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-semibold px-2 py-1 rounded border border-slate-300"
+                    onClick={() => handleAction(`Mở bảng điều khiển góc xoay PTZ cho ${cam.code}`)}
+                    className="hover:text-white hover:scale-110 transition"
+                    title="Điều khiển góc xoay PTZ"
                   >
-                    Bỏ qua
+                    <i className="fa-solid fa-arrows-up-down-left-right"></i>
+                  </button>
+                  <button
+                    onClick={() => handleAction(`Bật lưới ngắm radar cho ${cam.code}`)}
+                    className="hover:text-white hover:scale-110 transition"
+                    title="Bật lưới radar"
+                  >
+                    <i className="fa-solid fa-crosshairs"></i>
                   </button>
                 </div>
-              </div>
-
-              {/* Event 3: Mức độ 3 - Lưu lượng */}
-              <div className="p-2.5 rounded-lg border-l-4 border-blue-500 bg-blue-50/60 border border-slate-200 space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <span className="bg-blue-600 text-white text-[10px] font-extrabold px-1.5 py-0.5 rounded uppercase">
-                    Mức độ 3: Lưu lượng
+                {cam.footerInfo ? (
+                  <span className="text-[11px] font-mono bg-slate-800 text-emerald-400 border border-slate-700 px-2 py-0.5 rounded">
+                    {cam.footerInfo}
                   </span>
-                  <span className="text-[10px] text-slate-500 font-mono">08:30 Hôm nay</span>
-                </div>
-                <p className="font-bold text-slate-800 leading-snug">
-                  Mật độ phương tiện tăng cao trước cổng trường học
-                </p>
-                <div className="text-[11px] text-slate-600 flex justify-between">
-                  <span>
-                    <span className="font-semibold text-slate-700">Vị trí:</span> CAM 03 (Trường Tiểu học)
-                  </span>
-                  <span className="text-emerald-700 font-semibold">Đã thông thoáng</span>
-                </div>
-                <div className="text-[10px] text-slate-500 italic">
-                  <i className="fa-solid fa-check text-emerald-600"></i> Tổ tự quản đã giải tỏa an toàn
-                </div>
+                ) : (
+                  <button
+                    onClick={() => handleAction(`Đang phát thông điệp cảnh báo qua loa tại ${cam.location}`)}
+                    className="bg-[#b91c1c] hover:bg-red-700 text-white text-[11px] font-bold px-2.5 py-1 rounded flex items-center gap-1.5 shadow-xs transition"
+                  >
+                    <i className="fa-solid fa-bullhorn text-amber-300"></i> Phát loa cảnh báo
+                  </button>
+                )}
               </div>
-            </div>
-          </div>
+            </article>
+          ))}
+        </div>
 
-          {/* 3. Immediate Command Actions (Thao tác chỉ huy tức thời) */}
-          <div className="bg-white rounded-lg border border-slate-200 shadow-xs p-3.5 space-y-2.5">
-            <h2 className="font-bold text-xs uppercase tracking-wider text-slate-800 flex items-center gap-1.5 border-b border-slate-100 pb-2">
-              <i className="fa-solid fa-bolt-lightning text-amber-500"></i> Thao tác Chỉ huy Tức thời
-            </h2>
-            <div className="space-y-2">
-              <button
-                onClick={() => handleAction('Đã trích xuất biên bản sang Module Phản ánh Hiện trường')}
-                className="w-full bg-[#991b1b] hover:bg-red-900 text-white font-bold py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-2 shadow-xs transition"
-              >
-                <i className="fa-solid fa-file-export text-amber-300"></i> Trích xuất biên bản sang Module Phản ánh
-              </button>
-              <button
-                onClick={() => handleAction('Đã gửi thông báo khẩn cấp tới Tổ Tuần tra Cơ động')}
-                className="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-2 shadow-xs transition"
-              >
-                <i className="fa-solid fa-shield-cat text-[#991b1b]"></i> Báo động lực lượng Tuần tra Cơ động
-              </button>
-            </div>
-            <div className="bg-slate-50 p-2.5 rounded border border-slate-200 text-[11px] text-slate-600 space-y-1">
-              <div className="flex justify-between">
-                <span>Trực ban Chỉ huy Trực tiếp:</span>
-                <span className="font-bold text-slate-800">Trung tá Trần Đình B.</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Hotline Trực ban Công an Xã:</span>
-                <span className="font-bold text-[#b91c1c]">0239.3841.xxx</span>
-              </div>
-            </div>
+        {/* Pagination & Bandwidth status */}
+        <div className="bg-white rounded-lg border border-slate-200 p-3 flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div className="text-slate-600 font-medium">
+            Đang hiển thị <span className="font-bold text-slate-800">{filteredCams.length}/32</span> mắt giám sát
+            trực tiếp • Băng thông đường truyền:{' '}
+            <span className="font-bold text-emerald-600">28.4 MB/s</span> • Độ trễ mạng:{' '}
+            <span className="font-bold text-slate-800">14ms</span>
           </div>
-        </aside>
-      </div>
+          <div className="flex items-center space-x-1.5">
+            <button className="px-2.5 py-1 rounded border border-slate-300 text-slate-600 hover:bg-slate-50 disabled:opacity-50 text-xs font-medium">
+              Trang trước
+            </button>
+            <span className="px-3 py-1 bg-[#b91c1c] text-white font-bold rounded text-xs">Trang 1 / 6</span>
+            <button className="px-2.5 py-1 rounded border border-slate-300 text-slate-600 hover:bg-slate-50 text-xs font-medium">
+              Trang sau
+            </button>
+          </div>
+        </div>
+      </section>
 
       {/* Modal Zoom Camera if selected */}
       {selectedCam && (
