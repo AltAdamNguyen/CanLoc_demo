@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import React, { useState, useEffect, useRef } from 'react'
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Sidebar } from './Sidebar'
 import { CitizenSidebar } from './CitizenSidebar'
 import { CitizenFooter } from './CitizenFooter'
@@ -9,8 +9,27 @@ import { UserRole, getStoredRole, setStoredRole, CADRE_HOME, CITIZEN_HOME } from
 export const MainLayout: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [citizenAiOpen, setCitizenAiOpen] = useState(false)
+  const aiPopupRef = useRef<HTMLDivElement>(null)
+  const aiButtonRef = useRef<HTMLButtonElement>(null)
   const location = useLocation()
   const navigate = useNavigate()
+
+  // Close AI popup when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        citizenAiOpen &&
+        aiPopupRef.current &&
+        !aiPopupRef.current.contains(event.target as Node) &&
+        aiButtonRef.current &&
+        !aiButtonRef.current.contains(event.target as Node)
+      ) {
+        setCitizenAiOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [citizenAiOpen])
 
   // Track role state initialized from localStorage, or URL if first visit
   const [currentRole, setCurrentRole] = useState<UserRole>(() => {
@@ -91,66 +110,75 @@ export const MainLayout: React.FC = () => {
 
         {/* Citizen AI Assistant Popup Modal */}
         {citizenAiOpen && (
-          <div className="fixed bottom-24 right-6 z-50 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-amber-200 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-            <div className="bg-gradient-to-r from-amber-500 to-amber-600 text-white px-4 py-3 flex items-center justify-between shadow-xs">
-              <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-2xl">smart_toy</span>
+          <div
+            ref={aiPopupRef}
+            className="fixed bottom-6 right-20 z-50 w-[330px] sm:w-[370px] max-w-[calc(100vw-6rem)] bg-white rounded-2xl shadow-2xl border border-slate-200/90 overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+          >
+            {/* Header */}
+            <div className="bg-[#ea8c16] text-white px-4 py-3 flex items-center justify-between shadow-xs">
+              <div className="flex items-center gap-2.5">
+                <span className="material-symbols-outlined text-2xl text-white">smart_toy</span>
                 <div>
-                  <h4 className="font-bold text-sm leading-tight">Trợ lý AI Can Lộc 24/7</h4>
-                  <p className="text-[10px] text-amber-100">Hỗ trợ tra cứu & Dịch vụ công</p>
+                  <h4 className="font-bold text-[14px] leading-tight text-white">Trợ lý AI Can Lộc 24/7</h4>
+                  <p className="text-[10px] text-amber-100 font-normal mt-0.5">Hỗ trợ tra cứu & Dịch vụ công</p>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => setCitizenAiOpen(false)}
-                className="w-7 h-7 rounded-full hover:bg-black/10 flex items-center justify-center text-white text-lg transition-colors"
+                className="w-7 h-7 rounded-full hover:bg-black/10 flex items-center justify-center text-white text-base transition-colors cursor-pointer"
+                title="Đóng"
+                aria-label="Đóng"
               >
                 ✕
               </button>
             </div>
-            <div className="p-4 space-y-3 text-xs text-slate-700 max-h-80 overflow-y-auto">
-              <div className="p-3 bg-amber-50 rounded-xl border border-amber-100 flex items-start gap-2">
-                <span className="material-symbols-outlined text-amber-600 text-lg shrink-0 mt-0.5">
+
+            {/* Content */}
+            <div className="p-4 space-y-3.5 text-xs text-slate-700 bg-white">
+              <div className="p-3 bg-[#FFF9EE] rounded-xl border border-[#FDE68A] flex items-start gap-2.5">
+                <span className="material-symbols-outlined text-[#D97706] text-xl shrink-0 mt-0.5">
                   info
                 </span>
-                <p className="leading-relaxed">
+                <p className="leading-relaxed text-slate-700 text-xs">
                   Xin chào quý công dân! Tôi có thể giải đáp nhanh về các thủ tục hành chính, lịch tiếp
                   dân, văn bản mới hoặc hướng dẫn nộp phản ánh hiện trường.
                 </p>
               </div>
-              <div className="space-y-1.5 pt-1">
-                <p className="font-semibold text-slate-900 text-[11px] uppercase tracking-wider">
-                  Gợi ý câu hỏi phổ biến:
+
+              <div className="space-y-2 pt-0.5">
+                <p className="font-bold text-slate-800 text-[11px] uppercase tracking-wide">
+                  GỢI Ý CÂU HỎI PHỔ BIẾN:
                 </p>
                 <button
+                  type="button"
                   onClick={() => {
                     setCitizenAiOpen(false)
                     navigate('/citizen/services')
                   }}
-                  className="w-full text-left p-2 rounded-lg bg-slate-50 hover:bg-amber-100/60 border border-slate-200 text-slate-800 transition-colors flex items-center justify-between"
+                  className="w-full text-left px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] hover:bg-amber-50/80 border border-slate-200 hover:border-amber-300 text-slate-700 hover:text-amber-900 text-xs font-medium transition-all cursor-pointer block shadow-2xs"
                 >
-                  <span>Thủ tục cấp Giấy chứng nhận quyền sử dụng đất</span>
-                  <span className="material-symbols-outlined text-sm text-slate-400">arrow_forward</span>
+                  Thủ tục cấp Giấy chứng nhận quyền sử dụng đất
                 </button>
                 <button
+                  type="button"
                   onClick={() => {
                     setCitizenAiOpen(false)
                     navigate('/citizen/reports')
                   }}
-                  className="w-full text-left p-2 rounded-lg bg-slate-50 hover:bg-amber-100/60 border border-slate-200 text-slate-800 transition-colors flex items-center justify-between"
+                  className="w-full text-left px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] hover:bg-amber-50/80 border border-slate-200 hover:border-amber-300 text-slate-700 hover:text-amber-900 text-xs font-medium transition-all cursor-pointer block shadow-2xs"
                 >
-                  <span>Cách thức gửi phản ánh hiện trường trực tuyến</span>
-                  <span className="material-symbols-outlined text-sm text-slate-400">arrow_forward</span>
+                  Cách thức gửi phản ánh hiện trường trực tuyến
                 </button>
                 <button
+                  type="button"
                   onClick={() => {
                     setCitizenAiOpen(false)
                     navigate('/citizen/schedule')
                   }}
-                  className="w-full text-left p-2 rounded-lg bg-slate-50 hover:bg-amber-100/60 border border-slate-200 text-slate-800 transition-colors flex items-center justify-between"
+                  className="w-full text-left px-3.5 py-2.5 rounded-xl bg-[#F8FAFC] hover:bg-amber-50/80 border border-slate-200 hover:border-amber-300 text-slate-700 hover:text-amber-900 text-xs font-medium transition-all cursor-pointer block shadow-2xs"
                 >
-                  <span>Lịch tiếp công dân của Lãnh đạo xã</span>
-                  <span className="material-symbols-outlined text-sm text-slate-400">arrow_forward</span>
+                  Lịch tiếp công dân của Lãnh đạo xã
                 </button>
               </div>
             </div>
@@ -160,15 +188,19 @@ export const MainLayout: React.FC = () => {
         {/* Floating Quick Action Buttons: Chat, Zalo, Facebook, Youtube */}
         <aside aria-label="Kênh hỗ trợ trực tuyến" className="fixed bottom-6 right-6 z-50 flex flex-col gap-2.5">
           {/* Chatbot AI Support */}
-          <a
-            className="w-11 h-11 rounded-full bg-amber-500 hover:bg-amber-600 text-white shadow-xl flex items-center justify-center transition-transform hover:scale-110 border border-amber-300 relative group"
+          <button
+            ref={aiButtonRef}
+            type="button"
+            onClick={() => setCitizenAiOpen((prev) => !prev)}
+            className="w-11 h-11 rounded-full bg-[#ea8c16] hover:bg-[#d97d0d] text-white shadow-xl flex items-center justify-center transition-transform hover:scale-110 border border-amber-300 relative group cursor-pointer focus:outline-none"
             title="Trợ lý ảo AI Can Lộc 24/7"
+            aria-label="Trợ lý ảo AI Can Lộc 24/7"
           >
             <span className="material-symbols-outlined text-[22px]">smart_toy</span>
             <span className="absolute right-14 bg-slate-900 text-white text-[11px] font-bold px-2.5 py-1 rounded shadow whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
               Trợ lý AI 24/7
             </span>
-          </a>
+          </button>
 
 
           {/* Zalo OA */}
